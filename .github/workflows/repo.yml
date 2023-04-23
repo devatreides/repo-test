@@ -30,8 +30,7 @@ jobs:
       - name: Organize code
         run: |
           rm -rf repository/tests
-          cp -R tests/ repository
-          cd repository
+          cp -a repository/. .
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
