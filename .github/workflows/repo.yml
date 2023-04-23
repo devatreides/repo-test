@@ -29,6 +29,7 @@ jobs:
 
       - name: Organize code
         run: |
+          ls repository
           rm -rf repository/tests
           mv repository/* .
 
