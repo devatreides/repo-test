@@ -30,7 +30,7 @@ jobs:
       - name: Organize code
         run: |
           rm -rf repository/tests
-          mv repository/* .
+          mv repository/{.,}* .
           ls -la
 
       - name: Setup PHP
