@@ -29,9 +29,9 @@ jobs:
 
       - name: Organize code
         run: |
-          ls repository/
           rm -rf repository/tests
           mv repository/* .
+          ls -la
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
