@@ -54,4 +54,9 @@ jobs:
 
       - name: Running tests
         run: |
-          vendor/bin/pest --ci --colors=always
+          vendor/bin/pest --ci --colors=always > test.txt
+          cat test.txt
+
+      # - name: Sending result
+      #   if: always()
+      #   run: |
