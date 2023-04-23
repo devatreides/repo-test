@@ -54,10 +54,4 @@ jobs:
 
       - name: Running tests
         run: |
-          vendor/bin/pest --ci --colors=always --coverage-clover=clover.xml --parallel
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: test-coverage
-          path: clover.xml
-          retention-days: 1
+          vendor/bin/pest --ci --colors=always
