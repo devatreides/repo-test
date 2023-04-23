@@ -54,7 +54,7 @@ jobs:
 
       - name: Running tests
         run: |
-          vendor/bin/pest --ci --colors=always --testdox-text test.txt
+          vendor/bin/pest --ci --colors=always --compact --testdox-text test.txt
           cat test.txt
 
       # - name: Sending result
