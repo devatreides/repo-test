@@ -22,8 +22,10 @@ jobs:
           fetch-depth: 0
 
       - name: Get repository code
-        run: |
-          git clone ${{ github.event.client_payload.repository }} repository
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ github.event.client_payload.repository }}
+          path: repository
 
       - name: Organize code
         run: |
