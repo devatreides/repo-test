@@ -1,0 +1,63 @@
+name: Test repository
+
+on:
+  workflow_dispatch:
+
+  repository_dispatch:
+    types: [ bnc_assignment ]
+
+jobs:
+  tests:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+        php: ['8.2']
+        dependency-version: [prefer-stable]
+    name: Tests with PHP ${{ matrix.php }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Get repository code
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ github.event.client_payload.repository }}
+          path: repository
+
+      - name: Organize code
+        run: |
+          rm -rf repository/tests
+          mv repository/* .
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, dom, fileinfo
+          tools: composer:v2
+          coverage: xdebug
+
+      - name: Install PHP dependencies
+        run: composer update --${{ matrix.dependency-version }} --prefer-dist --no-interaction --no-suggest
+
+      - name: install tests
+        run: composer require --dev --prefer-dist --no-interaction --no-suggest pestphp/pest
+
+      - name: Configure application
+        run: |
+          cp .env.example .env
+          source .env
+          vendor/bin/pest --init
+
+      - name: Running tests
+        run: |
+          vendor/bin/pest --ci --colors=always --coverage-clover=clover.xml --parallel
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: test-coverage
+          path: clover.xml
+          retention-days: 1
