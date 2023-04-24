@@ -53,10 +53,12 @@ jobs:
           vendor/bin/pest --init
 
       - name: Running tests
+        id: pest
         run: |
           vendor/bin/pest --ci --colors=always --compact --testdox-text test.txt
 
       - name: Sending result
-        if: always()
+        if: failure() && steps.pest.outcome == 'failure'
         run: |
           cat test.txt
+
